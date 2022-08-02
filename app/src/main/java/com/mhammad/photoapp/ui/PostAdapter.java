@@ -1,42 +1,37 @@
-package com.mhammad.photoapp;
+package com.mhammad.photoapp.ui;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.mhammad.photoapp.R;
+import com.mhammad.photoapp.api.Hit;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
-    private ArrayList<Hit> data;
+    private List<Hit> data = new ArrayList<>();
     private Context context;
-    public OnFavouriteClickListener listener;
-    public PostAdapter(ArrayList<Hit> data, Context context, OnFavouriteClickListener listener) {
-        this.data = data;
+    private static OnFavouriteClickListener listener;
+    public PostAdapter( Context context) {
         this.context = context;
-        this.listener =  listener;
     }
 
-    public void setData(ArrayList<Hit> data) {this.data = data;notifyDataSetChanged();}
-    public void setOnClickListener(OnFavouriteClickListener listener) { this.listener = listener; }
+    public void setData(List<Hit> data) {this.data = data;notifyDataSetChanged();}
+    public void setOnFavouriteClickListener(OnFavouriteClickListener listener) { PostAdapter.listener = listener; }
     @NonNull
     @Override
     public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post, parent, false);
-        PostViewHolder viewHolder = new PostViewHolder(view);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onClick(view, viewHolder.getAdapterPosition());
-            }
-        });
-        return viewHolder;
+
+        return new PostViewHolder(view);
     }
 
     @Override
@@ -44,9 +39,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         Glide.with(context).load(data.get(position).userImageURL).into(holder.userImg);
         Glide.with(context).load(data.get(position).largeImageURL).into(holder.postImg);
         holder.userName.setText(data.get(position).user);
-        holder.like.setText(data.get(position).likes + "");
-        holder.comment.setText(data.get(position).comments + "");
-        holder.views.setText(data.get(position).views + "");
+        holder.like.setText(String.valueOf(data.get(position).likes));
+        holder.comment.setText(String.valueOf(data.get(position).comments));
+        holder.views.setText(String.valueOf(data.get(position).views));
     }
 
     @Override
@@ -54,7 +49,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         return data.size();
     }
 
-    public static class PostViewHolder extends RecyclerView.ViewHolder {
+    public static class PostViewHolder extends RecyclerView.ViewHolder  {
         ImageView userImg, postImg, favourite;
         TextView views, comment, like, userName;
 
@@ -67,10 +62,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             like = itemView.findViewById(R.id.likeTV);
             userName = itemView.findViewById(R.id.userNameTV);
             favourite =  itemView.findViewById(R.id.favourite_disabled);
-
+            favourite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(listener != null)
+                    {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION)
+                        {
+                            listener.onClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
     public interface OnFavouriteClickListener{
-        public void onClick(View v, int position);
+        void onClick(int position);
     }
 }
