@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">shopping</string>
+    <string name="laptop">laptop</string>
+    <string name="color">color</string>
+    <string name="price">price</string>
+    <string-array name="laptopNames">
+        <item>apple</item>
+        <item>dell1</item>
+        <item>lenovo</item>
+        <item>lenovo2</item>
+        <item>mini</item>
+        <item>razer</item>
+        <item>samsung</item>
+    </string-array>
+</resources>
