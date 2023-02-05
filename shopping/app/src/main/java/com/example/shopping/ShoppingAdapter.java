@@ -18,13 +18,15 @@ import java.util.List;
 public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHolder> {
     private static final String TAG = "ShoppingAdapter";
     Context context;
-    List<ShoppingModel>shoppingList=new ArrayList<>();
+    List<ShoppingModelImpl>shoppingList=new ArrayList<>();
+    OnProductClickListener listener;
 
-    public ShoppingAdapter(Context context) {
+    public ShoppingAdapter(Context context, OnProductClickListener listener) {
         this.context = context;
+        this.listener = listener;
     }
 
-    public void setData(List<ShoppingModel> shoppingList){
+    public void setData(List<ShoppingModelImpl> shoppingList){
         this.shoppingList=shoppingList;
         notifyDataSetChanged();
     }
@@ -50,7 +52,7 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
         return shoppingList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder{
         TextView nameTV,priceTV;
         ImageView img;
         public ViewHolder(@NonNull View itemView) {
@@ -58,22 +60,17 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
             nameTV=itemView.findViewById(R.id.nameTV);
             priceTV=itemView.findViewById(R.id.priceTV);
             img=itemView.findViewById(R.id.image);
-            itemView.setOnClickListener(this);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onProductClickListener(getAdapterPosition());
+                }
+            });
 
         }
+    }
 
-        @Override
-        public void onClick(View view) {
-            int position=getAdapterPosition();
-            Intent intent =new Intent(context,LaptopInfo.class);
-            ShoppingModel item=shoppingList.get(position);
-            intent.putExtra("laptopName",item.getName());
-            intent.putExtra("laptopDescription",item.getDescription());
-            intent.putExtra("laptopColor",item.getColor());
-            intent.putExtra("laptopPrice",item.getPrice());
-            intent.putExtra("laptopImage",item.getImg());
-            context.startActivity(intent);
-
-        }
+    public interface OnProductClickListener{
+        void onProductClickListener(int position);
     }
 }

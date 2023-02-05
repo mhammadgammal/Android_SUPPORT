@@ -6,32 +6,36 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
-    DayAdapter shoppingAdapter;
-    List<String> weekList;
-        @Override
+    ShoppingAdapter shoppingAdapter;
+    private List<ShoppingModelImpl> productList = new ArrayList<>();
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        weekList =new ArrayList<>();
-        recyclerView =findViewById(R.id.shoppingRV);
+        recyclerView = findViewById(R.id.shoppingRV);
         data();
-        shoppingAdapter=new DayAdapter();
-        weekList =
-        shoppingAdapter.setWeekList(weekList);
+        ShoppingAdapter.OnProductClickListener listener = new ShoppingAdapter.OnProductClickListener() {
+            @Override
+            public void onProductClickListener(int position) {
+                Toast.makeText(MainActivity.this, "" + position, Toast.LENGTH_SHORT).show();
+            }
+        };
+        shoppingAdapter = new ShoppingAdapter(this, listener);
+        shoppingAdapter.setData(productList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(shoppingAdapter);
-
-
     }
 
-    public void data(){
-        int [] images={
+    public void data() {
+        int[] images = {
                 R.drawable.apple,
                 R.drawable.dell1,
                 R.drawable.lenovo,
@@ -41,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 R.drawable.samsung
         };
 
-        double [] price={
+        double[] price = {
                 30000,
                 20000,
                 15000,
@@ -51,10 +55,10 @@ public class MainActivity extends AppCompatActivity {
                 25000
         };
 
-        Resources res= getResources();
-        String [] laptopNames=res.getStringArray(R.array.laptopNames);
-        for(int i=0;i<7;i++){
-            weekList.add(new ShoppingModel(images[i],laptopNames[i],price[i]));
+        Resources res = getResources();
+        String[] laptopNames = res.getStringArray(R.array.laptopNames);
+        for (int i = 0; i < 7; i++) {
+            productList.add(new ShoppingModelImpl(images[i], laptopNames[i], price[i]));
         }
 
     }

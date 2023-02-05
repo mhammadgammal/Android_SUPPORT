@@ -1,62 +1,30 @@
 package com.example.shopping;
 
-public class ShoppingModel {
-    private int img;
-    private String name,color,description;
-    private double price;
+public interface ShoppingModel {
+    String getColor();
 
 
-    public ShoppingModel(int img, String name, String color, String description, double price) {
-        this.img = img;
-        this.name = name;
-        this.color = color;
-        this.description = description;
-        this.price = price;
-    }
+    void setColor(String color);
 
-    public ShoppingModel(int img, String name, double price) {
-        this.img = img;
-        this.name = name;
-        this.price = price;
-    }
 
-    public String getColor() {
-        return color;
-    }
+    String getDescription();
 
-    public void setColor(String color) {
-        this.color = color;
-    }
 
-    public String getDescription() {
-        return description;
-    }
+    void setDescription(String description);
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
-    public int getImg() {
-        return img;
-    }
+    int getImg();
 
-    public void setImg(int img) {
-        this.img = img;
-    }
 
-    public String getName() {
-        return name;
-    }
+    void setImg(int img);
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    public double getPrice() {
-        return price;
-    }
+    String getName();
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
+
+    void setName(String name);
+
+    double getPrice();
+
+    void setPrice(double price);
 }
