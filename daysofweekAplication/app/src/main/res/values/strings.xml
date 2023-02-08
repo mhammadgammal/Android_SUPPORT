@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">days of week Aplication</string>
+    <string name="first_name">First Name</string>
+    <string name="family_name">Family Name</string>
+    <string name="age">Age</string>
+    <string name="let_s_go">Let\'s Go</string>
+    <string name="image_of_day">image of day</string>
+</resources>
